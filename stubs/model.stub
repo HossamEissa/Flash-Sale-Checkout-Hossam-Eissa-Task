@@ -1,0 +1,23 @@
+<?php
+
+namespace {{ namespace }};
+
+{{ factoryImport }}
+use Illuminate\Database\Eloquent\Model;
+use App\Traits\DynamicPagination;
+
+class {{ class }} extends Model
+{
+    {{ factory }} , DynamicPagination;
+    protected $fillable = [
+
+    ];
+
+####################################### Relations ###################################################
+
+####################################### End Relations ###############################################
+
+################################ Accessors and Mutators #############################################
+
+################################ End Accessors and Mutators #########################################
+}

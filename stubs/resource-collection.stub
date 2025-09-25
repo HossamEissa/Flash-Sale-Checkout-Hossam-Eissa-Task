@@ -1,0 +1,60 @@
+<?php
+
+namespace {{ namespace }};
+
+use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\ResourceCollection;
+
+class {{ class }} extends ResourceCollection
+{
+   /**
+       * Transform the resource collection into an array.
+       *
+       * @param  \Illuminate\Http\Request  $request
+       * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
+       */
+      public function toArray($request)
+      {
+          return [
+              'current_page' => $this->resource->currentPage(),
+              'data' => {{ class }}::collection($this->collection),
+              'first_page_url' => $this->resource->url(1),
+              'from' => $this->resource->firstItem(),
+              'last_page' => $this->resource->lastPage(),
+              'last_page_url' => $this->resource->url($this->resource->lastPage()),
+              'links' => $this->buildLinks(),
+              'next_page_url' => $this->resource->nextPageUrl(),
+              'path' => $this->resource->path(),
+              'per_page' => $this->resource->perPage(),
+              'prev_page_url' => $this->resource->previousPageUrl(),
+              'to' => $this->resource->lastItem(),
+              'total' => $this->resource->total(),
+          ];
+      }
+
+      /**
+       * Build pagination links.
+       *
+       * @return array
+       */
+      protected function buildLinks()
+      {
+          return [
+              [
+                  'url' => $this->resource->previousPageUrl(),
+                  'label' => '&laquo; Previous',
+                  'active' => !$this->resource->onFirstPage(),
+              ],
+              [
+                  'url' => $this->resource->url($this->resource->currentPage()),
+                  'label' => $this->resource->currentPage(),
+                  'active' => true,
+              ],
+              [
+                  'url' => $this->resource->nextPageUrl(),
+                  'label' => 'Next &raquo;',
+                  'active' => !$this->resource->hasMorePages(),
+              ],
+          ];
+      }
+}
