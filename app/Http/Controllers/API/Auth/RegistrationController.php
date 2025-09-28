@@ -5,6 +5,8 @@ namespace App\Http\Controllers\API\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\API\Auth\RegistrationRequest;
 use App\Mail\VerificationEmail;
+use App\Models\Company;
+use App\Models\Member;
 use App\Models\User;
 use App\Traits\ApiResponder;
 use Illuminate\Support\Facades\DB;
@@ -33,7 +35,11 @@ class RegistrationController extends Controller
 
             $user = User::query()->create($data);
 
-            $user->assignRole('member');
+            if ($data['profile_type'] == Member::class) {
+                $user->assignRole('member');
+            } else if ($data['profile_type'] == Company::class) {
+                $user->assignRole('company');
+            }
 
             $otp = $user->generateOTPCode();
 
@@ -57,12 +63,8 @@ class RegistrationController extends Controller
             $data['avatar'] = uploadFile($data['avatar'], 'users/avatars');
         }
 
-        if (isset($data['profile']['cr_commercial_registration'])) {
-            $data['profile']['cr_commercial_registration'] = uploadFile($data['profile']['cr_commercial_registration'], 'users/cr_commercial_registration');
-        }
-
-        if (isset($data['profile']['vat_certificate'])) {
-            $data['profile']['vat_certificate'] = uploadFile($data['profile']['vat_certificate'], 'users/vat_certificate');
+        if (isset($data['profile']['tax_card'])) {
+            $data['profile']['tax_card'] = uploadFile($data['profile']['tax_card'], 'users/tax_card');
         }
         return $data;
     }

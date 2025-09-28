@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Requests\API\Auth\ProfileTypes;
+namespace App\Http\Requests\API\Profile;
 
+use App\Http\Requests\API\Auth\ProfileTypes\ProfileTypeRequest;
 use App\Models\Company;
 use Illuminate\Foundation\Http\FormRequest;
 
-class CompanyRequest extends ProfileTypeRequest
+class UpdateProfileCompanyRequest extends ProfileTypeRequest
 {
     public string $profileClass = Company::class;
 
@@ -25,8 +26,8 @@ class CompanyRequest extends ProfileTypeRequest
     public function rules(): array
     {
         return [
-            'profile.tax_number' => 'required|string',
-            'profile.tax_card' => 'required|mimes:jpg,jpeg,png,gif,svg,webp,heif,heic,bmp,tiff,pdf',
+            'profile.tax_card' => 'sometimes|mimes:jpg,jpeg,png,gif,svg,webp,heif,heic,bmp,tiff,pdf',
+            'profile.tax_number' => 'sometimes|string',
         ];
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Requests\API\Auth;
 
 use App\Http\Requests\API\Auth\ProfileTypes\DriverRequest;
+use App\Http\Requests\API\Auth\ProfileTypes\MemberRequest;
 use App\Http\Requests\API\Auth\ProfileTypes\ProfileTypeRequest;
 use App\Http\Requests\API\Auth\ProfileTypes\CompanyRequest;
 use Illuminate\Foundation\Http\FormRequest;
@@ -47,6 +48,7 @@ class RegistrationRequest extends FormRequest
     {
         $this->profileTypeRequest = match ($this->input('profile_type')) {
             'company' => new CompanyRequest(),
+            'member' => new MemberRequest(),
             default => throw new \Exception('Invalid profile type'),
         };
 

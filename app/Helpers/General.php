@@ -34,7 +34,7 @@ if (!function_exists('uploadFile')) {
         $finalName = Str::slug(pathinfo($fileNameOriginal, PATHINFO_FILENAME)) . '.' . pathinfo($fileNameOriginal, PATHINFO_EXTENSION);;
         $file_name = time() . Str::random(15) . '-' . $finalName;
         if ($disk == 's3') {
-            $folder = 'zeed/' . $folder;
+            $folder = 'flying-arrow/' . $folder;
         }
         return $file->storeAs($folder, $file_name, $disk);
 

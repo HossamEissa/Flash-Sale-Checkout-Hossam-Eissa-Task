@@ -2,113 +2,73 @@
 
 namespace App\Http\Controllers\API\Profile;
 
+use App\Http\Controllers\API\Auth\RegistrationController;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\API\Profile\ChangePasswordRequest;
+use App\Http\Requests\API\Profile\UpdateProfileRequest;
+use App\Http\Resources\API\Profile\UserProfileResource;
 use App\Traits\ApiResponder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 
 class ProfileController extends Controller
 {
-    use ApiResponder;
-
-    public function show(Request $request)
+    public function me(Request $request)
     {
-        return $this->respondWithItem($request->user(), 'Profile retrieved successfully');
+        $user = Auth::user();
+        $user->loadSafeProfile();
+
+        return $this->respondWithRetrieved(UserProfileResource::make($user));
     }
 
-    public function update(Request $request)
+    public function update(UpdateProfileRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'sometimes|required|string|max:255',
-            'email' => 'sometimes|required|string|email|max:255|unique:users,email,' . $request->user()->id,
-            'phone' => 'sometimes|nullable|string|max:20',
-        ]);
+        $data = $request->validated();
 
-        if ($validator->fails()) {
-            return $this->errorWrongArgs($validator->errors()->first());
-        }
+        DB::beginTransaction();
 
         try {
-            DB::beginTransaction();
-            
-            $user = $request->user();
-            $user->update($request->only(['name', 'email', 'phone']));
-            
+            $data = RegistrationController::uploadFiles($data);
+
+            if (isset($data['profile'])) {
+                $request->user()->profile->update($data['profile']);
+            }
+
+            $request->user()->update($data);
+
             DB::commit();
-            
-            return $this->respondWithUpdated($user, 'Profile updated successfully');
+
+            return $this->respondWithUpdated();
         } catch (\Throwable $exception) {
             DB::rollBack();
             return $this->errorDatabase($exception->getMessage());
         }
     }
 
-    public function changePassword(Request $request)
+    public function changePassword(ChangePasswordRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'current_password' => 'required',
-            'password' => 'required|string|min:8|confirmed',
-        ]);
-
-        if ($validator->fails()) {
-            return $this->errorWrongArgs($validator->errors()->first());
-        }
-
         $user = $request->user();
 
-        if (!Hash::check($request->current_password, $user->password)) {
-            return $this->errorWrongArgs('Current password is incorrect');
-        }
+        $user->update(['password' => $request->new_password, 'created_from_dashboard' => false]);
 
-        try {
-            DB::beginTransaction();
-            
-            $user->update([
-                'password' => Hash::make($request->password)
-            ]);
-            
-            DB::commit();
-            
-            return $this->respondWithMessage('Password changed successfully');
-        } catch (\Throwable $exception) {
-            DB::rollBack();
-            return $this->errorDatabase($exception->getMessage());
-        }
+        return $this->respondWithUpdated(message: 'Password changed successfully.');
     }
 
-    public function deleteAccount(Request $request)
+    public function logout(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'password' => 'required',
-        ]);
+        $request->user()->currentAccessToken()->delete();
 
-        if ($validator->fails()) {
-            return $this->errorWrongArgs($validator->errors()->first());
-        }
-
-        $user = $request->user();
-
-        if (!Hash::check($request->password, $user->password)) {
-            return $this->errorWrongArgs('Password is incorrect');
-        }
-
-        try {
-            DB::beginTransaction();
-            
-            // Delete all user tokens
-            $user->tokens()->delete();
-            
-            // Delete user account
-            $user->delete();
-            
-            DB::commit();
-            
-            return $this->respondWithMessage('Account deleted successfully');
-        } catch (\Throwable $exception) {
-            DB::rollBack();
-            return $this->errorDatabase($exception->getMessage());
-        }
+        return $this->respondWithUpdated(message: 'Logged out successfully.');
     }
+
+    public function destroy(Request $request)
+    {
+        $user = $request->user();
+        $user->delete();
+        return $this->respondWithUpdated('Profile deleted successfully.');
+    }
+
 }

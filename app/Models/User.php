@@ -21,8 +21,21 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'country_code',
+        'country_calling_code',
+        'phone_number',
         'email',
+        'code',
+        'expire_at',
+        'profile_type',
+        'profile_id',
+        'status',
+        'avatar',
+        'last_login_at',
+        'lat',
+        'lng',
         'password',
+        'disk',
     ];
 
     /**
@@ -48,7 +61,16 @@ class User extends Authenticatable
         ];
     }
 ####################################### Relations ###################################################
-
+    public function profile()
+    {
+        return $this->morphTo()->withDefault();
+    }
+    public function loadSafeProfile(): void
+    {
+        if ($this->profile_type !== 'super-admin') {
+            $this->load('profile');
+        }
+    }
 ####################################### End Relations ###############################################
 
 ################################ Accessors and Mutators #############################################

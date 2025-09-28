@@ -3,11 +3,12 @@
 namespace App\Http\Requests\API\Auth\ProfileTypes;
 
 use App\Models\Company;
+use App\Models\Member;
 use Illuminate\Foundation\Http\FormRequest;
 
-class CompanyRequest extends ProfileTypeRequest
+class MemberRequest extends ProfileTypeRequest
 {
-    public string $profileClass = Company::class;
+    public string $profileClass = Member::class;
 
     /**
      * Determine if the user is authorized to make this request.
@@ -25,8 +26,7 @@ class CompanyRequest extends ProfileTypeRequest
     public function rules(): array
     {
         return [
-            'profile.tax_number' => 'required|string',
-            'profile.tax_card' => 'required|mimes:jpg,jpeg,png,gif,svg,webp,heif,heic,bmp,tiff,pdf',
+
         ];
     }
 }

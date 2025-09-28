@@ -2,22 +2,17 @@
 
 namespace App\Http\Controllers\API\Auth;
 
-use App\Enums\ConstantEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\API\Auth\LoginRequest;
 use App\Http\Resources\API\Auth\UserAuthResource;
 use App\Http\Resources\API\Profile\UserProfileResource;
 use App\Models\DeviceToken;
-use App\Models\Supplier;
 use App\Models\User;
 use App\Traits\ApiResponder;
 use Illuminate\Support\Facades\Hash;
 
 class LoginController extends Controller
 {
-    use ApiResponder;
-
-
     public function login(LoginRequest $request)
     {
         $data = $request->validated();
@@ -44,14 +39,14 @@ class LoginController extends Controller
             return $this->errorNotFound(__("These credentials do not match our records."));
         }
 
-        if (!($user->status == ConstantEnum::STATUS_ACTIVE)) {
-            if ($user->profile_type == Supplier::class) {
-                $message = __("Your supplier account is pending activation.");
-            } else {
-                $message = __("Your account is currently inactive.");
-            }
-            return $this->errorForbidden($message);
-        }
+//        if (!($user->status == ConstantEnum::STATUS_ACTIVE)) {
+//            if ($user->profile_type == Supplier::class) {
+//                $message = __("Your supplier account is pending activation.");
+//            } else {
+//                $message = __("Your account is currently inactive.");
+//            }
+//            return $this->errorForbidden($message);
+//        }
 
         $deviceName = $request->post('device_name', $request->userAgent());
         $token = $user->createToken($deviceName)->plainTextToken;

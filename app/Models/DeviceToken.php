@@ -9,12 +9,12 @@ use App\Traits\Sortable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Company extends Model
+class DeviceToken extends Model
 {
     use  HasFactory , DynamicPagination , Filterable , Searchable , Sortable;
     protected $fillable = [
-        'tax_number',
-        'tax_card',
+        'user_id',
+        'token'
     ];
 
 ####################################### Relations ###################################################

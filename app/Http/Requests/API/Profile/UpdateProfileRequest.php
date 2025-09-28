@@ -5,6 +5,7 @@ namespace App\Http\Requests\API\Profile;
 use App\Http\Requests\API\Auth\ProfileTypes\ProfileTypeRequest;
 use App\Http\Requests\API\SuperAdmin\Drivers\UpdateDriverRequest;
 use App\Http\Requests\API\SuperAdmin\Suppliers\UpdateSupplierRequest;
+use App\Models\Company;
 use App\Models\Driver;
 use App\Models\Supplier;
 use Illuminate\Foundation\Http\FormRequest;
@@ -53,7 +54,7 @@ class UpdateProfileRequest extends FormRequest
     public function prepareForValidation()
     {
         $this->profileTypeRequest = match ($this->user()->profile_type) {
-            Company::class => new UpdateProfileSupplierRequest(),
+            Company::class => new UpdateProfileCompanyRequest(),
             default => throw new \Exception('Invalid profile type'),
         };
     }
