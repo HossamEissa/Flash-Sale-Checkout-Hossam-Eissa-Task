@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -25,8 +24,10 @@ return new class extends Migration
             $table->enum('status', ['active', 'inactive', 'rejected'])->default('active');
             $table->decimal('lat', 11, 8)->nullable();
             $table->decimal('lng', 11, 8)->nullable();
+            $table->string('address')->nullable();
             $table->string('avatar')->nullable();
             $table->timestamp('last_login_at')->nullable();
+            $table->string('disk')->nullable();
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();

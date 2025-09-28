@@ -33,7 +33,7 @@ class RegistrationController extends Controller
 
             $user = User::query()->create($data);
 
-            $user->assignRole('user');
+            $user->assignRole('member');
 
             $otp = $user->generateOTPCode();
 

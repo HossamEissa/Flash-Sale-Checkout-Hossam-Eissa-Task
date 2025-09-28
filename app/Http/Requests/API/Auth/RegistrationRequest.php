@@ -33,7 +33,7 @@ class RegistrationRequest extends FormRequest
             'email' => ['required', 'email', 'unique:users,email'],
             'country_code' => ['required_with:phone_number', 'string'],
             'country_calling_code' => ['required_with:phone_number', 'string'],
-            'phone_number' => ['required', 'string', 'unique:users,phone_number', "phone:{$this->input('country_code')}"],
+            'phone_number' => ['nullable', 'string', 'unique:users,phone_number', "phone:{$this->input('country_code')}"],
             'profile_type' => ['required', 'string'],
             'status' => ['required', 'string'],
             'password' => ['required', 'string', 'confirmed', 'min:8', Password::min(8)->letters()->symbols()->numbers()->mixedCase()->uncompromised()],

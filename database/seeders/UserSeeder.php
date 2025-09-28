@@ -2,7 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\Company;
 use App\Models\Driver;
+use App\Models\Member;
 use App\Models\Supplier;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -26,15 +28,23 @@ class  UserSeeder extends Seeder
         $superAdmin->assignRole('super-admin');
 
 
-        $admin = User::factory()
-            ->withProfileType(Supplier::class)
+        $company = User::factory()
+            ->withProfileType(Company::class)
             ->create([
-                'name' => 'Shrouk',
-                'email' => 'shroukybendary@gmail.com',
+                'name' => 'Company',
+                'email' => 'company@admin.com',
                 'password' => '12345678'
             ]);
-        $admin->assignRole('supplier');
+        $company->assignRole('company');
 
+        $member = User::factory()
+            ->withProfileType(Member::class)
+            ->create([
+                'name' => 'member',
+                'email' => 'member@admin.com',
+                'password' => '12345678'
+            ]);
+        $company->assignRole('member');
 
 
     }

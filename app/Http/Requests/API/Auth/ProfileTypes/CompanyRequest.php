@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\API\Auth\ProfileTypes;
 
-use App\Models\Supplier;
+use App\Models\Company;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CompanyRequest extends ProfileTypeRequest
