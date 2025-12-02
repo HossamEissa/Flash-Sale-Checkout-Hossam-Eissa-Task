@@ -5,6 +5,8 @@ use App\Http\Controllers\API\Auth\ForgetPasswordController;
 use App\Http\Controllers\API\Auth\LoginController;
 use App\Http\Controllers\API\Auth\RegistrationController;
 use App\Http\Controllers\API\Auth\ResetPasswordController;
+use App\Http\Controllers\API\HoldController;
+use App\Http\Controllers\API\OrderController;
 use App\Http\Controllers\API\Profile\ProfileController;
 use App\Http\Controllers\API\ProductController;
 use Illuminate\Http\Request;
@@ -20,6 +22,14 @@ Route::prefix('list')->group(function () {
 ###################################### Products ##########################################
 Route::apiResource('products', ProductController::class)->only(['index', 'show']);
 ###################################### End Products ##########################################
+
+###################################### Holds ##########################################
+Route::apiResource('holds', HoldController::class)->only(['store', 'show']);
+###################################### End Holds ##########################################
+
+###################################### Orders ##########################################
+Route::apiResource('orders', OrderController::class)->only(['store', 'show']);
+###################################### End Orders ##########################################
 
 
 

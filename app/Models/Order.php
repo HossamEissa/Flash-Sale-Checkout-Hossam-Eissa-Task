@@ -30,29 +30,23 @@ class Order extends Model
         'consumed_at' => 'datetime',
     ];
 
-    /**
-     * Order items relationship
-     */
+####################################### Relations ###################################################
     public function orderItems(): HasMany
     {
         return $this->hasMany(OrderItem::class);
     }
+####################################### End Relations ###################################################
 
-    /**
-     * Check if this order/hold is active (not expired)
-     */
+################################ Accessors and Mutators #############################################
     public function isActive(): bool
     {
         if ($this->is_hold) {
             return $this->expires_at === null || $this->expires_at->isFuture();
         }
-        
+
         return in_array($this->status->value, ['confirmed', 'in_progress', 'shipped', 'out_for_delivery']);
     }
 
-    /**
-     * Scope for active holds
-     */
     public function scopeActiveHolds($query)
     {
         return $query->where('is_hold', true)
@@ -63,9 +57,7 @@ class Order extends Model
                     });
     }
 
-    /**
-     * Scope for confirmed orders that reserve stock
-     */
+
     public function scopeConfirmedOrders($query)
     {
         return $query->where('is_hold', false)
@@ -76,4 +68,5 @@ class Order extends Model
                         OrderStatus::OutForDelivery
                     ]);
     }
+################################ End Accessors and Mutators #############################################
 }

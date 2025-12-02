@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\DB;
 class Product extends Model
 {
     use HasFactory, DynamicPagination, Filterable, Searchable, Sortable;
-    
+
     protected $fillable = [
         'name',
         'slug',
@@ -33,9 +33,6 @@ class Product extends Model
 
 ####################################### Relations ###################################################
 
-    /**
-     * Relationship with order items
-     */
     public function orderItems()
     {
         return $this->hasMany(OrderItem::class);
@@ -46,8 +43,8 @@ class Product extends Model
 ################################ Accessors and Mutators #############################################
 
     /**
-     * Calculate available stock (optimized for burst traffic)
-     * Uses single query with joins for performance
+     * calculate available stock (optimized for burst traffic)
+     * using joins is better for performance
      */
     public function getAvailableStockAttribute()
     {

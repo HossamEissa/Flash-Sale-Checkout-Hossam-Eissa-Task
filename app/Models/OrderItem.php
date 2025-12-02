@@ -24,19 +24,15 @@ class OrderItem extends Model
         'subtotal' => 'decimal:2',
     ];
 
-    /**
-     * Order relationship
-     */
+####################################### Relations ###################################################
     public function order(): BelongsTo
     {
         return $this->belongsTo(Order::class);
     }
 
-    /**
-     * Product relationship
-     */
     public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class);
     }
+####################################### End Relations ###################################################
 }
