@@ -22,7 +22,7 @@ class PaymentWebhookRequest extends FormRequest
         return [
             'idempotency_key' => 'required|string|max:255',
             'order_id' => 'required|integer|exists:orders,id',
-            'event_type' => 'required|string|in:payment_success,payment_failed,payment_cancelled',
+            'event_type' => 'required|string|in:success,failed',
             'external_transaction_id' => 'nullable|string|max:255',
             'amount' => 'nullable|numeric|min:0',
             'currency' => 'nullable|string|size:3',
@@ -40,7 +40,7 @@ class PaymentWebhookRequest extends FormRequest
             'order_id.required' => 'Order ID is required.',
             'order_id.exists' => 'The specified order does not exist.',
             'event_type.required' => 'Event type is required.',
-            'event_type.in' => 'Event type must be one of: payment_success, payment_failed, payment_cancelled.',
+            'event_type.in' => 'Event type must be one of: success, failed.',
             'currency.size' => 'Currency must be a 3-character ISO code.',
         ];
     }

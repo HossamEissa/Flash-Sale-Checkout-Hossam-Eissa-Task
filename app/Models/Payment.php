@@ -10,7 +10,6 @@ use App\Traits\Sortable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Carbon\Carbon;
 
 class Payment extends Model
 {
@@ -19,7 +18,6 @@ class Payment extends Model
     protected $fillable = [
         'idempotency_key',
         'order_id',
-        'event_type',
         'status',
         'payload',
         'external_transaction_id',
@@ -57,7 +55,6 @@ class Payment extends Model
     {
         $this->update([
             'status' => PaymentStatusEnum::Completed,
-            'processed_at' => Carbon::now(),
         ]);
     }
 
@@ -66,7 +63,6 @@ class Payment extends Model
         $this->update([
             'status' => PaymentStatusEnum::Failed,
             'error_message' => $errorMessage,
-            'processed_at' => Carbon::now(),
         ]);
     }
 

@@ -28,10 +28,11 @@ class PaymentWebhookController extends Controller
 
         $result = $this->paymentWebhookService->processWebhook($validated);
 
-        if ($result['success']) {
-            return $this->respondWithItem($result, 'Webhook processed successfully');
-        } else {
+        // Check for actual processing errors (not just failed payments)
+        if (!$result['success'] && isset($result['already_processed'])) {
             return $this->errorWrongArgs($result['message']);
         }
+
+        return $this->respondWithItem($result, 'Webhook processed successfully');
     }
 }

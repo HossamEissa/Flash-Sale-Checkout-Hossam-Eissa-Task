@@ -56,7 +56,7 @@ class PaymentWebhookService
                 'order_status' => $order->status->value,
             ];
 
-            Cache::put($data['idempotency_key'], $result);
+            Cache::put($data['idempotency_key'], $result, 3600); // Cache for 1 hour
 
             DB::commit();
             return $result;

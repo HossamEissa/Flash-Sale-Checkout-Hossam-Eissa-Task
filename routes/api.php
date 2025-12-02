@@ -33,7 +33,7 @@ Route::apiResource('orders', OrderController::class)->only(['store', 'show']);
 ###################################### End Orders ##########################################
 
 ###################################### Payment Webhooks ##########################################
-Route::post('payments/webhook', [PaymentWebhookController::class, 'handle']);
+Route::post('webhooks/payment', [PaymentWebhookController::class, 'handle']);
 ###################################### End Payment Webhooks ##########################################
 
 

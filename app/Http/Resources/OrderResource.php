@@ -15,10 +15,11 @@ class OrderResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'order_id' => $this->id,
+            'id' => $this->id,
             'status' => $this->status->value,
             'payment_status' => $this->payment_status->value,
             'total' => $this->total,
+            'is_hold' => $this->is_hold,
             'created_at' => $this->created_at->toISOString(),
             'consumed_at' => $this->when($this->consumed_at, fn() => $this->consumed_at->toISOString()),
             'items' => OrderItemResource::collection($this->whenLoaded('orderItems')),
