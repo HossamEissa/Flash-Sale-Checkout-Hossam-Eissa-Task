@@ -6,6 +6,7 @@ use App\Http\Controllers\API\Auth\LoginController;
 use App\Http\Controllers\API\Auth\RegistrationController;
 use App\Http\Controllers\API\Auth\ResetPasswordController;
 use App\Http\Controllers\API\Profile\ProfileController;
+use App\Http\Controllers\API\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -15,6 +16,10 @@ Route::prefix('list')->group(function () {
 
 });
 ###################################### End Drop-Down ##########################################
+
+###################################### Products ##########################################
+Route::apiResource('products', ProductController::class)->only(['index', 'show']);
+###################################### End Products ##########################################
 
 
 
