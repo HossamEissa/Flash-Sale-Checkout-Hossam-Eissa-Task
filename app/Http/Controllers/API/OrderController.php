@@ -7,8 +7,10 @@ use App\Http\Requests\CreateOrderRequest;
 use App\Http\Resources\OrderResource;
 use App\Http\Resources\OrderCollection;
 use App\Models\Order;
+use App\Models\Payment;
 use App\Enums\OrderStatus;
 use App\Enums\PaymentStatus;
+use App\Enums\PaymentStatusEnum;
 use App\Traits\ApiResponder;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -45,6 +47,17 @@ class OrderController extends Controller
                 'expires_at' => null,
                 'consumed_at' => Carbon::now(),
             ]);
+
+            // Create payment record if online payment is selected
+            if ($paymentStatus === PaymentStatus::OnlinePayment) {
+                Payment::create([
+                    'idempotency_key' => 'order_' . $hold->id . '_' . time(),
+                    'order_id' => $hold->id,
+                    'status' => PaymentStatusEnum::Pending,
+                    'amount' => $hold->total,
+                    'currency' => 'EGP',
+                ]);
+            }
 
             DB::commit();
 

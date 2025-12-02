@@ -7,6 +7,7 @@ use App\Http\Controllers\API\Auth\RegistrationController;
 use App\Http\Controllers\API\Auth\ResetPasswordController;
 use App\Http\Controllers\API\HoldController;
 use App\Http\Controllers\API\OrderController;
+use App\Http\Controllers\API\PaymentWebhookController;
 use App\Http\Controllers\API\Profile\ProfileController;
 use App\Http\Controllers\API\ProductController;
 use Illuminate\Http\Request;
@@ -30,6 +31,10 @@ Route::apiResource('holds', HoldController::class)->only(['store', 'show']);
 ###################################### Orders ##########################################
 Route::apiResource('orders', OrderController::class)->only(['store', 'show']);
 ###################################### End Orders ##########################################
+
+###################################### Payment Webhooks ##########################################
+Route::post('payments/webhook', [PaymentWebhookController::class, 'handle']);
+###################################### End Payment Webhooks ##########################################
 
 
 

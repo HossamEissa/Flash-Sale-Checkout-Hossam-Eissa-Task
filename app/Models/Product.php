@@ -42,9 +42,9 @@ class Product extends Model
 
 ################################ Accessors and Mutators #############################################
 
-    /**
-     * calculate available stock (optimized for burst traffic)
-     * using joins is better for performance
+    /*
+      calculate available stock (optimized for burst traffic)
+      using joins is better for performance
      */
     public function getAvailableStockAttribute()
     {

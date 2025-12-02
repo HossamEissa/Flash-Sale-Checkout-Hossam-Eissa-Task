@@ -15,8 +15,7 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            // Distinguish between a temporary hold vs a finalized order
-            $table->boolean('is_hold')->default(true)->index();
+            $table->boolean('is_hold')->default(true);
             $table->enum('status', OrderStatus::values())->default(OrderStatus::Pending->value);
             $table->enum('payment_status', PaymentStatus::values())->default(PaymentStatus::Pending->value);
             $table->decimal('total', 12, 2)->default(0);
