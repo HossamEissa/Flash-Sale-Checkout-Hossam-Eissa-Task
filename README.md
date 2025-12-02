@@ -25,8 +25,7 @@ cp .env.example .env
 php artisan key:generate
 
 # Setup database
-php artisan migrate
-php artisan db:seed --class=ProductSeeder
+php artisan migrate --seed
 
 # Run application
 php artisan serve
@@ -130,5 +129,5 @@ php artisan tinker
 ])
 
 # Clean expired holds
-php artisan orders:expire-holds --force
+php artisan orders:expire-holds 
 ```
