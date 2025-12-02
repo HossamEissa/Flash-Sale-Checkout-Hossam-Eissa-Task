@@ -44,7 +44,7 @@ class  UserSeeder extends Seeder
                 'email' => 'member@admin.com',
                 'password' => '12345678'
             ]);
-        $company->assignRole('member');
+        $member->assignRole('member');
 
 
     }

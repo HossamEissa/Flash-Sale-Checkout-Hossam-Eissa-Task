@@ -13,8 +13,6 @@ return new class extends Migration
     {
         Schema::create('companies', function (Blueprint $table) {
             $table->id();
-            $table->string('tax_number')->nullable();
-            $table->string('tax_card')->nullable();
             $table->timestamps();
         });
     }
